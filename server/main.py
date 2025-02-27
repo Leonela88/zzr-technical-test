@@ -10,8 +10,6 @@ import TestInterface.Vec3
 import json
 app = FastAPI()
 
-CyclesPerSecond = 20
-
 class Status(Enum):
     ALERT = 0
     HOMING = 1
@@ -42,7 +40,8 @@ async def websocket_endpoint(websocket: WebSocket):
     while i < 5000:
         builder = flatbuffers.Builder(1024)
         ## generate some random data and serialize it
-        # pointer each 300 cycles
+
+        # need to serialize before starting the builder
         if i % 600 == 0:
             message = random_str()
             # serialization
@@ -86,10 +85,6 @@ async def websocket_endpoint(websocket: WebSocket):
 
         ## send through websocket
         await websocket.send_bytes(builder.Output())
-
-        ## send raw data as json, testing purpose
-        #json_data = { "pointer": (vector[0], vector[1], vector[2]), "offset": offset, "hp": hp, "message": message, "status": status, "distance": distance }
-        #await websocket.send_json(json_data)
         i = i + 1
     await websocket.close()
 
