@@ -1,0 +1,22 @@
+// example IDL file
+
+namespace TestInterface;
+
+enum Status:byte { Alert, Homing, Idle, Jogging }
+
+struct Vec3 {
+  x:float;
+  y:float;
+  z:float;
+}
+
+table State {
+  pointer:Vec3;
+  offset:short = null;
+  hp:short = null;
+  message:string;
+  status:Status = null;
+  distance:short;
+}
+
+root_type State;
