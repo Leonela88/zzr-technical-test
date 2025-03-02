@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Websocket client</title>
+    </head>
+    <body>
+        <h1>WebSocket client</h1>
+        <button id="connectBtn">Connect</button>
+        <ul id="messages"></ul>
+
+        <script>
+            var ws;
+
+            document.getElementById("connectBtn").addEventListener("click", function() {
+                ws = new WebSocket("ws://localhost:8000/ws");
+
+                ws.onopen = function() {
+                    console.log("Connected");
+                };
+
+                ws.onmessage = function(event) {
+                    var messages = document.getElementById('messages');
+                    var messageItem = document.createElement('li');
+                    messageItem.textContent = event.data;
+                    messages.appendChild(messageItem);
+                };
+
+                ws.onerror = function(error) {
+                    console.error("Error: ", error);
+                };
+
+                ws.onclose = function() {
+                    console.log("connection closed");
+                };
+            });
+        </script>
+    </body>
+</html>
