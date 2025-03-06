@@ -9,30 +9,68 @@
         <ul id="messages"></ul>
 
         <script>
-            var ws;
+    var ws;
 
-            document.getElementById("connectBtn").addEventListener("click", function() {
-                ws = new WebSocket("ws://localhost:8000/ws");
+    document.getElementById("connectBtn").addEventListener("click", function() {
+        ws = new WebSocket("ws://localhost:8000/ws");
 
-                ws.onopen = function() {
-                    console.log("Connected");
-                };
+        ws.onopen = function() {
+            console.log("Connected");
+        };
 
-                ws.onmessage = function(event) {
-                    var messages = document.getElementById('messages');
-                    var messageItem = document.createElement('li');
-                    messageItem.textContent = event.data;
-                    messages.appendChild(messageItem);
-                };
+        ws.onmessage = function(event) {
+            
+            var arrayBuffer = event.data;
 
-                ws.onerror = function(error) {
-                    console.error("Error: ", error);
-                };
+           
+            var buf = new Uint8Array(arrayBuffer);
 
-                ws.onclose = function() {
-                    console.log("connection closed");
-                };
-            });
+           
+            var state = TestInterface.State.GetRootAs(buf, 0); 
+
+            
+            var pointer = state.Pointer(); 
+            var offset = state.Offset();  
+            var hp = state.Hp();          
+            var message = state.Message(); 
+            var status = state.Status();   
+            var distance = state.Distance(); 
+
+            
+            console.log("Pointer:", pointer);
+            console.log("Offset:", offset);
+            console.log("HP:", hp);
+            console.log("Message:", message);
+            console.log("Status:", status);
+            console.log("Distance:", distance);
+
+           
+            if (pointer) {
+                var x = pointer.X();
+                var y = pointer.Y();
+                var z = pointer.Z();
+                console.log("Vec3 Coordinates: X=", x, "Y=", y, "Z=", z);
+            }
+
+            
+            var messages = document.getElementById('messages');
+            var messageItem = document.createElement('li');
+            messageItem.textContent = `HP: ${hp}, Message: ${message}, Status: ${status}, Distance: ${distance}`;
+            messages.appendChild(messageItem);
+        };
+
+        ws.onerror = function(error) {
+            console.error("Error: ", error);
+        };
+
+        ws.onclose = function() {
+            console.log("Connection closed");
+        };
+    });
+</script>
+
         </script>
     </body>
 </html>
+
+
