@@ -7,28 +7,28 @@
         <h1>WebSocket client</h1>
         <button id="connectBtn">Connect</button>
         <ul id="messages"></ul>
-
-        <script>
+        
+    <script>
     var ws;
 
     document.getElementById("connectBtn").addEventListener("click", function() {
-        ws = new WebSocket("ws://localhost:8000/ws");
+        ws = new WebSocket("ws://localhost:8000/ws/json");
 
         ws.onopen = function() {
             console.log("Connected");
         };
 
         ws.onmessage = function(event) {
-            
-            var arrayBuffer = event.data;
-
            
-            var buf = new Uint8Array(arrayBuffer);
+            var bytes = new Uint8Array(event.data); 
+
+            
+            var buf = new flatbuffers.ByteBuffer(bytes);
 
            
             var state = TestInterface.State.GetRootAs(buf, 0); 
 
-            
+         
             var pointer = state.Pointer(); 
             var offset = state.Offset();  
             var hp = state.Hp();          
@@ -36,7 +36,6 @@
             var status = state.Status();   
             var distance = state.Distance(); 
 
-            
             console.log("Pointer:", pointer);
             console.log("Offset:", offset);
             console.log("HP:", hp);
@@ -44,7 +43,7 @@
             console.log("Status:", status);
             console.log("Distance:", distance);
 
-           
+            
             if (pointer) {
                 var x = pointer.X();
                 var y = pointer.Y();
@@ -52,7 +51,7 @@
                 console.log("Vec3 Coordinates: X=", x, "Y=", y, "Z=", z);
             }
 
-            
+           
             var messages = document.getElementById('messages');
             var messageItem = document.createElement('li');
             messageItem.textContent = `HP: ${hp}, Message: ${message}, Status: ${status}, Distance: ${distance}`;
@@ -70,5 +69,3 @@
 </script>
     </body>
 </html>
-
-
