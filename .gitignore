@@ -1,0 +1,17 @@
+node_modules/
+__pycache__/
+*.pyc
+.env
+public/bundle.js
+public/bundle.js.map
+generated/cd ~/News26/tech-test
+cat > .gitignore << 'EOF'
+node_modules/
+__pycache__/
+*.pyc
+.env/
+generated/
+bundle.js
+bundle.js.map
+flatc.exe
+EOF

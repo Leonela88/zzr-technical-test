@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZZR Test</title>
+       <style>
+        body { font-family: monospace; background: #1e1e1e; color: #ccc; padding: 20px; }
+        #log { background: #0d0d0d; border: 1px solid #444; padding: 10px; height: 300px; overflow-y: auto; font-size: 12px; }
+        #log div { margin: 2px 0; }
+        #result { font-size: 48px; font-weight: bold; margin: 20px 0; }
+    </style>
+</head>
+
+<body>
+    <h1>ZZR FlatBuffers Test</h1>
+    <button id="start-btn">START</button>
+    <div id="stats"></div>
+    <div id="result"></div>
+    <div id="log"></div>
+    <script type="module">
+        import { startWebSocket } from './bundle.js';
+        document.getElementById('start-btn').addEventListener('click', startWebSocket);
+    </script>
+</body>
+
+</html>
